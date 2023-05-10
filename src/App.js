@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const API_URL = 'https://v5992nju75.execute-api.eu-west-3.amazonaws.com/Prod/bips';
+const API_URL = '/bips';
 
 function App() {
   const [pseudo, setPseudo] = useState('');
