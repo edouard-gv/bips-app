@@ -38,6 +38,7 @@ function App() {
         <option value="">Select Status Code</option>
         <option value="je veux un café">Je veux un café</option>
         <option value="chouette j'ai du boulot">Chouette j'ai du boulot</option>
+        <option value="en destaff, on paire ?">En destaff, on paire ?</option>
       </select>
       <button onClick={handleSubmit}>Submit</button>
       <h2>Bips</h2>
