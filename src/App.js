@@ -26,7 +26,7 @@ function App() {
         Cookies.set('pseudo', pseudo);
         const data = {pseudo, location: selectedLocation, status_code: selectedStatusCode};
         await axios.post(API_URL, data);
-        const response = await axios.get(API_URL, { params: { selectedLocation } });
+        const response = await axios.get(API_URL, { params: { location: selectedLocation } });
         setBips(response.data);
     };
 
