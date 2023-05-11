@@ -11,3 +11,5 @@ phases:
   post_build:
     commands:
       - aws s3 sync build/ s3://bips-app
+      - aws cloudfront create-invalidation --distribution-id E10IUHMA4ATEBR --paths "/" "/index.html"
+
