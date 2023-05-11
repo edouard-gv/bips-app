@@ -1,56 +1,72 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import Cookies from 'js-cookie';
 import axios from 'axios';
+import './App.css';
 
-const API_URL = '/bips';
+
+const API_URL = '/bips'; // l'API est sur le même domaine que le front
 
 function App() {
-  const [pseudo, setPseudo] = useState('');
-  const [location, setLocation] = useState('');
-  const [statusCode, setStatusCode] = useState('');
-  const [bips, setBips] = useState([]);
+    const [pseudo, setPseudo] = useState("");
+    const [selectedLocation, setLocation] = useState("");
+    const [selectedStatusCode, setStatusCode] = useState("");
+    const [bips, setBips] = useState([]);
 
-  const handleSubmit = async () => {
-    const data = {
-      pseudo,
-      location,
-      status_code: statusCode,
+    const locations = ["chez mon client", "au siège", "au boulois"];
+    const statusCodes = ["je veux un café", "chouette j'ai du boulot", "en destaff, on paire ?", "je donne une formation", "j'ai faim", "j'en peux plus", "besoin de calme", "vite, mon daily", "suis à la bourre"];
+
+    useEffect(() => {
+        const savedPseudo = Cookies.get('pseudo');
+        if (savedPseudo) {
+            setPseudo(savedPseudo);
+        }
+    }, []);
+
+    const submitBip = async () => {
+        Cookies.set('pseudo', pseudo);
+        const data = {pseudo, location: selectedLocation, status_code: selectedStatusCode};
+        await axios.post(API_URL, data);
+        const response = await axios.get(API_URL, { params: { selectedLocation } });
+        setBips(response.data);
     };
-    await axios.post(API_URL, data);
-    const response = await axios.get(API_URL, { params: { location } });
-    setBips(response.data);
-  };
 
-  return (
-    <div>
-      <h1>Bips App</h1>
-      <input
-        type="text"
-        placeholder="Pseudo"
-        value={pseudo}
-        onChange={(e) => setPseudo(e.target.value)}
-      />
-      <select value={location} onChange={(e) => setLocation(e.target.value)}>
-        <option value="">Select Location</option>
-        <option value="chez mon client">Chez mon client</option>
-        <option value="au siège">Au siège</option>
-      </select>
-      <select value={statusCode} onChange={(e) => setStatusCode(e.target.value)}>
-        <option value="">Select Status Code</option>
-        <option value="je veux un café">Je veux un café</option>
-        <option value="chouette j'ai du boulot">Chouette j'ai du boulot</option>
-        <option value="en destaff, on paire ?">En destaff, on paire ?</option>
-      </select>
-      <button onClick={handleSubmit}>Submit</button>
-      <h2>Bips</h2>
-      <ul>
-        {bips.map((bip, index) => (
-          <li key={index}>
-            {bip.pseudo} - {bip.status_code} - {bip.timestamp}
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
+    return (
+        <div className="app">
+            <div className="input-field">
+                <label>Pseudo:</label>
+                <input type="text" value={pseudo} onChange={(e) => setPseudo(e.target.value)} />
+            </div>
+            <h2>Réseau</h2>
+            <div className="button-group">
+                {locations.map((location) => (
+                    <button className={`button-location ${location === selectedLocation ? 'selected' : ''}`} key={location} onClick={() => setLocation(location)}>
+                        {location}
+                    </button>
+                ))}
+            </div>
+            <h2>Status Code</h2>
+            <div className="button-group">
+                {statusCodes.map((statusCode) => (
+                    <button className={`button-status-code ${statusCode === selectedStatusCode ? 'selected' : ''}`} key={statusCode} onClick={() => setStatusCode(statusCode)}>
+                        {statusCode}
+                    </button>
+                ))}
+            </div>
+            <button className="button-submit"  disabled={!pseudo || !selectedLocation || !selectedStatusCode} onClick={submitBip}>
+                Bip !
+            </button>
+            <div hidden={bips.length===0}>
+                <h2>Sur le réseau</h2>
+                <ul>
+                    {bips.map((bip, index) => (
+                        <li key={index}>
+                            {bip.pseudo} - {bip.status_code} - {bip.timestamp}
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        </div>
+    );
 }
 
 export default App;

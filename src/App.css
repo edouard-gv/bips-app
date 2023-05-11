@@ -1,38 +1,54 @@
-.App {
+.app {
   text-align: center;
+  margin-top: 50px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.input-field {
+  margin-bottom: 20px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.button-group {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+button {
+  margin: 5px;
+  padding: 7px 15px;
+  border-radius: 10px;
+  border: none; /* Supprime la bordure */
+  box-shadow: none; /* Supprime l'ombre */
+}
+
+.button-location {
+  background-color: #ff6347; /* Changer les couleurs selon vos préférences */
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.button-status-code {
+  background-color: #1e90ff; /* Changer les couleurs selon vos préférences */
+  color: white;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.button-submit {
+  background-color: #32cd32; /* Changer les couleurs selon vos préférences */
+  color: white;
+}
+
+.button-location.selected {
+  background: #ad2f00; /* Couleur plus foncée pour le bouton sélectionné */
+}
+
+.button-status-code.selected {
+  background: #00008B; /* Couleur plus foncée pour le bouton sélectionné */
+}
+
+.button-submit:hover {
+  background: #45a049; /* Change la couleur de fond lors de la survol */
+}
+
+.button-submit:disabled {
+  background: #ccc; /* Change la couleur de fond lors de la survol */
+  cursor: not-allowed; /* Change le curseur de la souris */
 }
