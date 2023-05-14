@@ -13,7 +13,17 @@ function App() {
     const [bips, setBips] = useState([]);
 
     const locations = ["chez mon client", "au siège", "au boulois"];
-    const statusCodes = ["je veux un café", "chouette j'ai du boulot", "en destaff, on paire ?", "je donne une formation", "j'ai faim", "j'en peux plus", "besoin de calme", "vite, mon daily", "suis à la bourre"];
+    const statusCodes = [
+        {code: 100, status: "je veux un café"},
+        {code: 200, status: "chouette j'ai du boulot"},
+        {code: 300, status: "en destaff, on paire ?"},
+        {code: 400, status: "je donne une formation"},
+        {code: 500, status: "j'ai faim"},
+        {code: 600, status: "j'en peux plus"},
+        {code: 700, status: "besoin de calme"},
+        {code: 800, status: "vite, mon daily"},
+        {code: 900, status: "suis à la bourre"},
+    ];
 
     useEffect(() => {
         const savedPseudo = Cookies.get('pseudo');
@@ -47,10 +57,15 @@ function App() {
             <h2>Status Code</h2>
             <div className="button-group">
                 {statusCodes.map((statusCode) => (
-                    <button className={`button-status-code ${statusCode === selectedStatusCode ? 'selected' : ''}`} key={statusCode} onClick={() => setStatusCode(statusCode)}>
-                        {statusCode}
+                    <button
+                        className={`button-status-code ${statusCode.code === selectedStatusCode ? 'selected' : ''}`}
+                        key={statusCode.code}
+                        onClick={() => setStatusCode(statusCode.code)}
+                    >
+                        {statusCode.code}: {statusCode.status}
                     </button>
                 ))}
+
             </div>
             <button className="button-submit"  disabled={!pseudo || !selectedLocation || !selectedStatusCode} onClick={submitBip}>
                 Bip !
@@ -58,11 +73,15 @@ function App() {
             <div hidden={bips.length===0}>
                 <h2>Sur le réseau</h2>
                 <ul>
-                    {bips.map((bip, index) => (
-                        <li key={index}>
-                            {bip.pseudo} - {bip.status_code} - {bip.timestamp}
-                        </li>
-                    ))}
+                    {bips.map((bip, index) => {
+                        const statusCodeObj = statusCodes.find(sc => sc.code === bip.status_code);
+                        const status_text = statusCodeObj ? statusCodeObj.status : "Unknown status";
+                        return (
+                            <li key={index}>
+                                {bip.pseudo} - {bip.status_code}: {status_text} - {bip.timestamp}
+                            </li>
+                        );
+                    })}
                 </ul>
             </div>
         </div>
