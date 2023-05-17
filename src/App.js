@@ -62,7 +62,8 @@ function App() {
                         key={statusCode.code}
                         onClick={() => setStatusCode(statusCode.code)}
                     >
-                        {statusCode.code}: {statusCode.status}
+                        <div className="left">{statusCode.code}</div>
+                        <div className="right">{statusCode.status}</div>
                     </button>
                 ))}
 
