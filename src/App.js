@@ -10,9 +10,12 @@ function App() {
     const [pseudo, setPseudo] = useState("");
     const [selectedLocation, setLocation] = useState("");
     const [selectedStatusCode, setStatusCode] = useState("");
+    const [navLatitude, setNavLatitude] = useState("");
+    const [navLongitude, setNavLongitude] = useState("");
+    const [city, setCity] = useState("");
     const [bips, setBips] = useState([]);
 
-    const locations = ["chez mon client", "au siège", "au boulois"];
+    const locations = [{nom: "au siège", latitude: 48.865140, longitude: 2.342850}, {nom: "au bouloi", latitude: 48.863860, longitude: 2.341220} , {nom: "geoloc", latitude: navLatitude, longitude: navLongitude}];
     const statusCodes = [
         {code: 100, status: "je veux un café"},
         {code: 200, status: "chouette j'ai du boulot"},
@@ -30,13 +33,53 @@ function App() {
         if (savedPseudo) {
             setPseudo(savedPseudo);
         }
+
+        //get current location
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((position) => {
+                const { latitude, longitude } = position.coords;
+                setNavLatitude(latitude);
+                setNavLongitude(longitude);
+                axios.get(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`).then((response) => {
+                    setCity(response.data.address.city ? response.data.address.city : response.data.address.village);
+                });
+            });
+        }
+        else {
+            alert("Geolocation is not supported by this browser.");
+        }
     }, []);
+
+    const formatLocation = (location) => {
+        if (location === "geoloc") {
+            return `(${formatDMS(navLatitude)}, ${formatDMS(navLongitude)}) ${city}`;
+        }
+        return location;
+    }
+
+    //formatage de décimaux en degrés, minutes, secondes
+    const formatDMS = (coord) => {
+        const absolute = Math.abs(coord);
+        const degrees = Math.floor(absolute);
+        const minutesNotTruncated = (absolute - degrees) * 60;
+        const minutes = Math.floor(minutesNotTruncated);
+        const seconds = Math.floor((minutesNotTruncated - minutes) * 60);
+
+        return `${degrees}° ${minutes}' ${seconds}"`;
+    }
 
     const submitBip = async () => {
         Cookies.set('pseudo', pseudo);
-        const data = {pseudo, location: selectedLocation, status_code: selectedStatusCode};
-        await axios.post(API_URL, data);
-        const response = await axios.get(API_URL, { params: { location: selectedLocation } });
+        let getParams = { location: selectedLocation.nom };
+        if (selectedLocation.longitude && selectedLocation.latitude) {
+            getParams.longitude = selectedLocation.longitude;
+            getParams.latitude = selectedLocation.latitude;
+        }
+        let postParams = { ...getParams};
+        postParams.pseudo = pseudo;
+        postParams.status_code = selectedStatusCode;
+        await axios.post(API_URL, postParams);
+        const response = await axios.get(API_URL, { params: getParams });
         setBips(response.data);
     };
 
@@ -49,8 +92,8 @@ function App() {
             <h2>Réseau</h2>
             <div className="button-group">
                 {locations.map((location) => (
-                    <button className={`button-location ${location === selectedLocation ? 'selected' : ''}`} key={location} onClick={() => setLocation(location)}>
-                        {location}
+                    <button className={`button-location ${location.nom === selectedLocation.nom ? 'selected' : ''}`} key={location.nom} onClick={() => setLocation(location)}>
+                        {formatLocation(location.nom)}
                     </button>
                 ))}
             </div>
