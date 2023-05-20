@@ -18,7 +18,7 @@ function App() {
     const locations = [{nom: "au siège", latitude: 48.865140, longitude: 2.342850}, {nom: "au bouloi", latitude: 48.863860, longitude: 2.341220} , {nom: "geoloc", latitude: navLatitude, longitude: navLongitude}];
     const statusCodes = [
         {code: 100, status: "je veux un café"},
-        {code: 200, status: "chouette j'ai du boulot"},
+        {code: 200, status: "j'ai du boulot et ça me plaît"},
         {code: 300, status: "en destaff, on paire ?"},
         {code: 400, status: "je donne une formation"},
         {code: 500, status: "j'ai faim"},
@@ -27,6 +27,11 @@ function App() {
         {code: 800, status: "vite, mon daily"},
         {code: 900, status: "suis à la bourre"},
     ];
+
+    //arrondi des coordonnées GPS au 6ème chiffre après la virgule
+    const roundCoord = (coord) => {
+        return Number(Math.round(coord + 'e6') + 'e-6');
+    }
 
     useEffect(() => {
         const savedPseudo = Cookies.get('pseudo');
@@ -38,8 +43,14 @@ function App() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition((position) => {
                 const { latitude, longitude } = position.coords;
-                setNavLatitude(latitude);
-                setNavLongitude(longitude);
+                if (roundCoord(navLatitude) !== roundCoord(latitude) || roundCoord(navLongitude) !== roundCoord(longitude)) {
+                    console.log("old location", roundCoord(navLatitude), roundCoord(navLongitude));
+                    console.log("new location", roundCoord(latitude), roundCoord(longitude));
+                    setNavLatitude(latitude);
+                    setNavLongitude(longitude);
+                    if (selectedLocation.nom === "geoloc")
+                        setLocation({});
+                }
                 axios.get(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`).then((response) => {
                     setCity(response.data.address.city ? response.data.address.city : response.data.address.village);
                 });
@@ -66,6 +77,15 @@ function App() {
         const seconds = Math.floor((minutesNotTruncated - minutes) * 60);
 
         return `${degrees}° ${minutes}' ${seconds}"`;
+    }
+
+    //récupération de l'heure dans un timestamp
+    function padZero(number) {
+        return number < 10 ? '0' + number : number;
+    }
+    const formatTime = (timestamp) => {
+        const date = new Date(timestamp);
+        return `${padZero(date.getHours())}:${padZero(date.getMinutes())}`;
     }
 
     const submitBip = async () => {
@@ -116,13 +136,12 @@ function App() {
             </button>
             <div hidden={bips.length===0}>
                 <h2>Sur le réseau</h2>
-                <ul>
+                <ul className="button-group">
                     {bips.map((bip, index) => {
-                        const statusCodeObj = statusCodes.find(sc => sc.code === bip.status_code);
-                        const status_text = statusCodeObj ? statusCodeObj.status : "Unknown status";
                         return (
-                            <li key={index}>
-                                {bip.pseudo} - {bip.status_code}: {status_text} - {bip.timestamp}
+                            <li key={index} className="bips">
+                                <div className="left">{bip.status_code}</div>
+                                <div className="right">{bip.pseudo} {formatTime(bip.timestamp)}</div>
                             </li>
                         );
                     })}

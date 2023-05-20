@@ -11,6 +11,8 @@
   display: flex;
   flex-wrap: wrap;
   margin-bottom: 20px;
+  padding-left: 10px;
+  justify-content: center;
 }
 
 button {
@@ -61,7 +63,7 @@ button {
 }
 
 .button-status-code.selected .right {
-  background: #00008B; /* Couleur plus foncée pour le bouton sélectionné */
+  background: #1563ad; /* Couleur plus foncée pour le bouton sélectionné */
 }
 
 .button-submit:hover {
@@ -71,4 +73,32 @@ button {
 .button-submit:disabled {
   background: #ccc; /* Change la couleur de fond lors de la survol */
   cursor: not-allowed; /* Change le curseur de la souris */
+}
+
+.bips {
+  margin: 5px;
+  border-radius: 10px;
+  border: none; /* Supprime la bordure */
+  box-shadow: none; /* Supprime l'ombre */
+  font-family: 'Fira Mono', Menlo, Monaco, Consolas, 'Courier New', monospace; /* récupéré de index.css, impossible de savoir pourquoi ça n'hérite pas de body */
+  display: flex;
+  justify-content: space-between;
+  overflow: hidden;
+  padding: 0;
+}
+
+.bips .left {
+  background-color: #999;
+  flex-grow: 1;
+  padding: 7px 5px 7px 10px;
+  color: white;
+  text-align: center;
+}
+
+.bips .right {
+  background-color: #5f2da9;
+  flex-grow: 1;
+  padding: 7px 10px 7px 5px;
+  color: white;
+  text-align: center;
 }
