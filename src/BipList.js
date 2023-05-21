@@ -4,6 +4,7 @@ import './BipList.css';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 
 const API_URL = '/bips'; // l'API est sur le même domaine que le front
+//const API_URL = 'http://localhost:3001/bips'; // test en local
 
 function BipList({location}) {
     const [bips, setBips] = useState([]);
@@ -51,9 +52,6 @@ function BipList({location}) {
                         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     />
-                    <Marker position={[location.latitude, location.longitude]}>
-                        <Popup>A pretty CSS3 popup.<br />Easily customizable.</Popup>
-                    </Marker>
                     {bips.map((bip, index) => {
                         return (bip.latitude || bip.longitude) && (
                             <Marker key={index} position={[bip.latitude, bip.longitude]}>
