@@ -84,7 +84,7 @@ function App() {
     const submitBip = async () => {
         Cookies.set('pseudo', pseudo);
         let getParams = { location: selectedLocation.name };
-        if (selectedLocation.longitude && selectedLocation.latitude) {
+        if (selectedLocation.longitude || selectedLocation.latitude) {
             getParams.longitude = selectedLocation.longitude;
             getParams.latitude = selectedLocation.latitude;
         }
