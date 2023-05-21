@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 import './App.css';
+import BipList from "./BipList";
 
 
 const API_URL = '/bips'; // l'API est sur le même domaine que le front
@@ -13,9 +14,8 @@ function App() {
     const [navLatitude, setNavLatitude] = useState("");
     const [navLongitude, setNavLongitude] = useState("");
     const [city, setCity] = useState("");
-    const [bips, setBips] = useState([]);
 
-    const locations = [{nom: "au siège", latitude: 48.865140, longitude: 2.342850}, {nom: "au bouloi", latitude: 48.863860, longitude: 2.341220} , {nom: "geoloc", latitude: navLatitude, longitude: navLongitude}];
+    const locations = [{name: "au siège", latitude: 48.865140, longitude: 2.342850}, {name: "au bouloi", latitude: 48.863860, longitude: 2.341220} , {name: "geoloc", latitude: navLatitude, longitude: navLongitude}];
     const statusCodes = [
         {code: 100, status: "je veux un café"},
         {code: 200, status: "j'ai du boulot et ça me plaît"},
@@ -48,7 +48,7 @@ function App() {
                     console.log("new location", roundCoord(latitude), roundCoord(longitude));
                     setNavLatitude(latitude);
                     setNavLongitude(longitude);
-                    if (selectedLocation.nom === "geoloc")
+                    if (selectedLocation.name === "geoloc")
                         setLocation({});
                 }
                 axios.get(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`).then((response) => {
@@ -59,9 +59,10 @@ function App() {
         else {
             alert("Geolocation is not supported by this browser.");
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const formatLocation = (location) => {
+    const formatLocationName = (location) => {
         if (location === "geoloc") {
             return `(${formatDMS(navLatitude)}, ${formatDMS(navLongitude)}) ${city}`;
         }
@@ -79,18 +80,10 @@ function App() {
         return `${degrees}° ${minutes}' ${seconds}"`;
     }
 
-    //récupération de l'heure dans un timestamp
-    function padZero(number) {
-        return number < 10 ? '0' + number : number;
-    }
-    const formatTime = (timestamp) => {
-        const date = new Date(timestamp);
-        return `${padZero(date.getHours())}:${padZero(date.getMinutes())}`;
-    }
 
     const submitBip = async () => {
         Cookies.set('pseudo', pseudo);
-        let getParams = { location: selectedLocation.nom };
+        let getParams = { location: selectedLocation.name };
         if (selectedLocation.longitude && selectedLocation.latitude) {
             getParams.longitude = selectedLocation.longitude;
             getParams.latitude = selectedLocation.latitude;
@@ -99,8 +92,6 @@ function App() {
         postParams.pseudo = pseudo;
         postParams.status_code = selectedStatusCode;
         await axios.post(API_URL, postParams);
-        const response = await axios.get(API_URL, { params: getParams });
-        setBips(response.data);
     };
 
     return (
@@ -112,8 +103,8 @@ function App() {
             <h2>Réseau</h2>
             <div className="button-group">
                 {locations.map((location) => (
-                    <button className={`button-location ${location.nom === selectedLocation.nom ? 'selected' : ''}`} key={location.nom} onClick={() => setLocation(location)}>
-                        {formatLocation(location.nom)}
+                    <button className={`button-location ${location.name === selectedLocation.name ? 'selected' : ''}`} key={location.name} onClick={() => setLocation(location)}>
+                        {formatLocationName(location.name)}
                     </button>
                 ))}
             </div>
@@ -134,19 +125,7 @@ function App() {
             <button className="button-submit"  disabled={!pseudo || !selectedLocation || !selectedStatusCode} onClick={submitBip}>
                 Bip !
             </button>
-            <div hidden={bips.length===0}>
-                <h2>Sur le réseau</h2>
-                <ul className="button-group">
-                    {bips.map((bip, index) => {
-                        return (
-                            <li key={index} className="bips">
-                                <div className="left">{bip.status_code}</div>
-                                <div className="right">{bip.pseudo} {formatTime(bip.timestamp)}</div>
-                            </li>
-                        );
-                    })}
-                </ul>
-            </div>
+            <BipList location={selectedLocation} api_url={API_URL} />
         </div>
     );
 }
