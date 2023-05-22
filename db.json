@@ -2,17 +2,37 @@
   {
     "pseudo": "\u00c9douard ",
     "status_code": 100,
-    "timestamp": "2023-05-20T11:16:02.793373"
+    "timestamp": "2023-05-20T11:16:02.793373",
+    "latitude": 48.865140,
+    "longitude": 2.342850
   },
   {
-    "pseudo": "edouard",
-    "status_code": 700,
-    "timestamp": "2023-05-20T17:39:18.314307"
+    "pseudo": "Julie",
+    "status_code": 200,
+    "timestamp": "2023-05-20T17:39:18.314307",
+    "latitude": 48.865140,
+    "longitude": 2.342850
   },
   {
-    "pseudo": "\u00c9douard ",
-    "status_code": 700,
-    "timestamp": "2023-05-20T11:17:06.814450"
+    "pseudo": "Dorra",
+    "status_code": 300,
+    "timestamp": "2023-05-20T11:17:06.814450",
+    "latitude": 48.865140,
+    "longitude": 2.342850
+  },
+  {
+    "pseudo": "Christian",
+    "status_code": 500,
+    "timestamp": "2023-05-20T17:39:18.314307",
+    "latitude": 48.863860,
+    "longitude": 2.341220
+  },
+  {
+    "pseudo": "Dimitri",
+    "status_code": 400,
+    "timestamp": "2023-05-20T11:17:06.814450",
+    "latitude": 48.863860,
+    "longitude": 2.341220
   }
 
 ]}
