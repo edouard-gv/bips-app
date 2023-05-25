@@ -17,15 +17,24 @@ function App() {
 
     const locations = [{name: "au siège", latitude: 48.865140, longitude: 2.342850}, {name: "au bouloi", latitude: 48.863860, longitude: 2.341220} , {name: "geoloc", latitude: navLatitude, longitude: navLongitude}];
     const statusCodes = [
-        {code: 100, status: "je veux un café"},
-        {code: 200, status: "j'ai du boulot et ça me plaît"},
-        {code: 300, status: "en destaff, on paire ?"},
-        {code: 400, status: "je donne une formation"},
-        {code: 500, status: "j'ai faim"},
-        {code: 600, status: "j'en peux plus"},
-        {code: 700, status: "besoin de calme"},
-        {code: 800, status: "vite, mon daily"},
-        {code: 900, status: "suis à la bourre"},
+        {code: 102, status: "En formation"},
+        {code: 200, status: "Motivé pour bosser"},
+        {code: 201, status: "J'ai plein d'idées"},
+        {code: 202, status: "Qui a besoin d'aide ?"},
+        {code: 204, status: "Je m'ennuie"},
+        {code: 206, status: "Café ?"},
+        {code: 300, status: "Trop de trucs à faire"},
+        {code: 302, status: "Je rentre chez moi"},
+        {code: 401, status: "Besoin d'un truc"},
+        {code: 404, status: "Faites comme si je n'étais pas là"},
+        {code: 408, status: "En retard"},
+        {code: 410, status: "En réunion toute la journée"},
+        {code: 411, status: "J'ai faim"},
+        {code: 418, status: "Je suis une théière"},
+        {code: 429, status: "Besoin de calme"},
+        {code: 500, status: "Au secours"},
+        {code: 503, status: "J'en peux plus"},
+        {code: 504, status: "Je suis très en retard"},
     ];
 
     //arrondi des coordonnées GPS au 6ème chiffre après la virgule
