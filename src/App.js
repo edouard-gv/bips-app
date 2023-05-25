@@ -25,6 +25,7 @@ function App() {
         {code: 206, status: "Café ?"},
         {code: 300, status: "Trop de trucs à faire"},
         {code: 302, status: "Je rentre chez moi"},
+        {code: 305, status: "On mob ?"},
         {code: 401, status: "Besoin d'un truc"},
         {code: 404, status: "Faites comme si je n'étais pas là"},
         {code: 408, status: "En retard"},
