@@ -36,7 +36,7 @@ function BipList({location, bipsCount}) {
         return number < 10 ? '0' + number : number;
     }
     const formatTime = (timestamp) => {
-        const date = new Date(timestamp);
+        const date = new Date(`${timestamp}Z`);
         return `${padZero(date.getHours())}:${padZero(date.getMinutes())}`;
     }
 
