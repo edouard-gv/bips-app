@@ -1,6 +1,20 @@
 .app {
   text-align: center;
-  margin-top: 50px;
+}
+
+.logo {
+  background-image: url("/public/logo192.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  padding-left: 30px;
+}
+
+.header {
+  display: flex;
+  background-color: #1563ad;
+  color: white;
+  padding: 10px;
+  justify-content: space-between;
 }
 
 .input-field {
