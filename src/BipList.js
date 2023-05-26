@@ -9,7 +9,7 @@ L.Icon.Default.imagePath = '/';
 const API_URL = '/bips'; // l'API est sur le même domaine que le front
 //const API_URL = 'http://localhost:3001/bips'; // test en local
 
-function BipList({location}) {
+function BipList({location, bipsCount}) {
     const [bips, setBips] = useState([]);
     const [map, setMap] = useState(null);
 
@@ -21,9 +21,6 @@ function BipList({location}) {
                 getParams.longitude = location.longitude;
                 if (map) {
                     map.target.panTo([location.latitude, location.longitude]);
-                    // Cette ligne force le recalcul des dimensions de la carte
-                    // pour éviter un bug d'affichage
-                    map.target.invalidateSize();
                 }
             }
             const response = await axios.get(API_URL, { params: getParams });
@@ -32,7 +29,7 @@ function BipList({location}) {
         if (location) {
             fetchData();
         }
-    }, [map, location]);
+    }, [map, location, bipsCount]);
 
     //récupération de l'heure dans un timestamp
     function padZero(number) {
@@ -51,7 +48,7 @@ function BipList({location}) {
                         center={[location.latitude, location.longitude]}
                         zoom={16}
                         style={{ height: "256px", width: "256px"}}
-                        whenCreated={(map) => setMap(map)}
+                        whenReady={(map) => setMap(map)}
                     >
                         <TileLayer
                             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'

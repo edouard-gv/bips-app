@@ -15,7 +15,7 @@ function App() {
     const [navLongitude, setNavLongitude] = useState("");
     const [city, setCity] = useState("");
     const [time, setTime] = React.useState(new Date().toLocaleTimeString());
-
+    const [bipsCount, setBipsCount] = useState(0);
     const locations = [{name: "au siège", latitude: 48.865140, longitude: 2.342850}, {name: "au bouloi", latitude: 48.863860, longitude: 2.341220} , {name: "geoloc", latitude: navLatitude, longitude: navLongitude}];
     const statusCodes = [
         {code: 102, status: "En formation"},
@@ -111,6 +111,7 @@ function App() {
         postParams.pseudo = pseudo;
         postParams.status_code = selectedStatusCode;
         await axios.post(API_URL, postParams);
+        setBipsCount(bipsCount + 1);
     };
 
     return (
@@ -150,7 +151,7 @@ function App() {
             <button className="button-submit"  disabled={!pseudo || !selectedLocation || !selectedStatusCode} onClick={submitBip}>
                 Bip !
             </button>
-            <BipList location={selectedLocation} api_url={API_URL} />
+            <BipList location={selectedLocation} bipsCount={bipsCount} api_url={API_URL} />
         </div>
     );
 }
