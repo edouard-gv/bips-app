@@ -71,7 +71,17 @@ function App() {
                         setLocation({});
                 }
                 axios.get(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`).then((response) => {
-                    setCity(response.data.address.city ? response.data.address.city : response.data.address.village);
+                    //récupérer la ville ou le village
+                    let place =
+                        response.data.address.city ? response.data.address.city :
+                            response.data.address.town ? response.data.address.town :
+                                response.data.address.village ? response.data.address.village :
+                                    response.data.address.hamlet ? response.data.address.hamlet :
+                                        response.data.address.suburb ? response.data.address.suburb :
+                                            response.data.address.neighbourhood ? response.data.address.neighbourhood :
+                                                "perdu ?"
+
+                    setCity(place);
                 });
             });
         }
