@@ -2,19 +2,35 @@
   text-align: center;
 }
 
-.logo {
-  background-image: url("/public/logo192.png");
-  background-repeat: no-repeat;
-  background-size: contain;
-  padding-left: 30px;
-}
-
 .header {
   display: flex;
   background-color: #1563ad;
   color: white;
   padding: 10px;
   justify-content: space-between;
+}
+
+@media (max-width: 530px) {
+  .header {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+.logo {
+  background-image: url("/public/logo192.png");
+  background-repeat: no-repeat;
+  background-position-x: 5px;
+  background-position-y: center;
+  background-size: 30px;
+  padding-left: 40px;
+}
+
+@media (max-width: 530px) {
+  .logo {
+    background-size: 47px;
+    padding-left: 57px;
+  }
 }
 
 .input-field {

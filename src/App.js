@@ -14,7 +14,6 @@ function App() {
     const [navLatitude, setNavLatitude] = useState("");
     const [navLongitude, setNavLongitude] = useState("");
     const [city, setCity] = useState("");
-    const [time, setTime] = React.useState(new Date().toLocaleTimeString());
     const [bipsCount, setBipsCount] = useState(0);
     const locations = [{name: "au siège", latitude: 48.865140, longitude: 2.342850}, {name: "au bouloi", latitude: 48.863860, longitude: 2.341220} , {name: "geoloc", latitude: navLatitude, longitude: navLongitude}];
     const statusCodes = [
@@ -43,14 +42,6 @@ function App() {
     const roundCoord = (coord) => {
         return Number(Math.round(coord + 'e6') + 'e-6');
     }
-
-    useEffect(() => {
-        // Mettre à jour l'heure toutes les secondes
-        const interval = setInterval(() => {
-            setTime(new Date().toLocaleTimeString());
-        }, 1000);
-        return () => clearInterval(interval);
-    }, []);
 
     useEffect(() => {
         const savedPseudo = Cookies.get('pseudo');
@@ -93,7 +84,7 @@ function App() {
 
     const formatLocationName = (location) => {
         if (location === "geoloc") {
-            return `(${formatDMS(navLatitude)}, ${formatDMS(navLongitude)}) ${city}`;
+            return `${formatDMS(navLatitude)}, ${formatDMS(navLongitude)} ${city}`;
         }
         return location;
     }
@@ -106,7 +97,7 @@ function App() {
         const minutes = Math.floor(minutesNotTruncated);
         const seconds = Math.floor((minutesNotTruncated - minutes) * 60);
 
-        return `${degrees}° ${minutes}' ${seconds}"`;
+        return `${degrees}°${minutes}'${seconds}"`;
     }
 
 
@@ -126,8 +117,7 @@ function App() {
 
     return (
         <div className="app">
-            <div className="header">
-                <div className="logo">{time}</div>
+            <div className="logo header">
                 <div>
                     <label>Pseudo:</label>
                     <input type="text" value={pseudo} onChange={(e) => setPseudo(e.target.value)} />
