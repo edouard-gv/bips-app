@@ -18,7 +18,7 @@ function App() {
     const locations = [{name: "au siège", latitude: 48.865140, longitude: 2.342850}, {name: "au bouloi", latitude: 48.863860, longitude: 2.341220} , {name: "geoloc", latitude: navLatitude, longitude: navLongitude}];
     const statusCodes = [
         {code: 102, status: "En formation"},
-        {code: 200, status: "Motivé pour bosser"},
+        {code: 200, status: "Motivé·e pour bosser"},
         {code: 201, status: "J'ai plein d'idées"},
         {code: 202, status: "Qui a besoin d'aide ?"},
         {code: 204, status: "Je m'ennuie"},
