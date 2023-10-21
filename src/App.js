@@ -5,7 +5,8 @@ import './App.css';
 import BipList from "./BipList";
 
 
-const API_URL = '/bips'; // l'API est sur le même domaine que le front
+const API_PATH = '/bips';
+const API_URL = API_PATH; // l'API est sur le même domaine que le front
 
 function App() {
     const [ws, setWs] = useState(null);
@@ -81,10 +82,10 @@ function App() {
             alert("Geolocation is not supported by this browser.");
         }
 
-        const socket = new WebSocket(
-//            "wss://YOUR-API-ID.execute-api.YOUR-REGION.amazonaws.com/YOUR-STAGE"
-            API_URL+"/ws"
-        );
+        const currentUrl = window.location.href;
+        const wsUrl = currentUrl.replace(/^https/, "wss")+API_PATH+"/ws";
+
+        const socket = new WebSocket(wsUrl);
 
         socket.onopen = (event) => {
             console.log("Connecté à la WebSocket", event);
