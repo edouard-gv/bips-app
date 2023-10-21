@@ -8,6 +8,7 @@ import BipList from "./BipList";
 const API_URL = '/bips'; // l'API est sur le même domaine que le front
 
 function App() {
+    const [ws, setWs] = useState(null);
     const [pseudo, setPseudo] = useState("");
     const [selectedLocation, setLocation] = useState("");
     const [selectedStatusCode, setStatusCode] = useState("");
@@ -81,7 +82,8 @@ function App() {
         }
 
         const socket = new WebSocket(
-            "wss://YOUR-API-ID.execute-api.YOUR-REGION.amazonaws.com/YOUR-STAGE"
+//            "wss://YOUR-API-ID.execute-api.YOUR-REGION.amazonaws.com/YOUR-STAGE"
+            API_URL+"/ws"
         );
 
         socket.onopen = (event) => {
