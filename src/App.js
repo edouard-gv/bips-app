@@ -5,8 +5,8 @@ import './App.css';
 import BipList from "./BipList";
 
 
-const API_PATH = '/bips';
-const API_URL = API_PATH; // l'API est sur le même domaine que le front
+const API_PATH = 'bips';
+const API_URL = '/'+API_PATH; // l'API est sur le même domaine que le front
 
 function App() {
     const [ws, setWs] = useState(null);
