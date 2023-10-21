@@ -79,6 +79,40 @@ function App() {
         else {
             alert("Geolocation is not supported by this browser.");
         }
+
+        const socket = new WebSocket(
+            "wss://YOUR-API-ID.execute-api.YOUR-REGION.amazonaws.com/YOUR-STAGE"
+        );
+
+        socket.onopen = (event) => {
+            console.log("Connecté à la WebSocket", event);
+        };
+
+        socket.onmessage = (event) => {
+            console.log("Message reçu:", event.data);
+        };
+
+        socket.onerror = (error) => {
+            console.error("Erreur WebSocket:", error);
+        };
+
+        socket.onclose = (event) => {
+            if (event.wasClean) {
+                console.log(
+                    `Fermé proprement, code=${event.code}, raison=${event.reason}`
+                );
+            } else {
+                console.error("Connexion décédée");
+            }
+        };
+
+        // Enregistrez la WebSocket dans l'état pour l'utiliser plus tard si nécessaire
+        setWs(socket);
+
+        // N'oubliez pas de fermer la WebSocket lors du démontage du composant
+        return () => {
+            socket.close();
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
