@@ -83,7 +83,7 @@ function App() {
         }
 
         const currentUrl = window.location.href;
-        const wsUrl = currentUrl.replace(/^https/, "wss")+API_PATH+"/ws";
+        const wsUrl = currentUrl.replace(/^https/, "wss").replace("bips", "wss")+API_PATH;
 
         const socket = new WebSocket(wsUrl);
 
