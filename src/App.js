@@ -1,12 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 import './App.css';
 import BipList from "./BipList";
 
+const DEBUG = false;
 
 const API_PATH = 'bips';
-const API_URL = '/'+API_PATH; // l'API est sur le même domaine que le front
+let API_URL = '/'+API_PATH; // l'API est sur le même domaine que le front
+if (DEBUG) {
+    API_URL = 'https://bips.agilenautes.com/'+API_PATH; // test sur le serveur directement
+}
 
 function App() {
     const [ws, setWs] = useState(null);
@@ -45,6 +49,46 @@ function App() {
         return Number(Math.round(coord + 'e6') + 'e-6');
     }
 
+    function computeWsUrl() {
+        if (DEBUG) {
+            return "wss://wss.agilenautes.com/"+API_PATH;
+        }
+        const currentUrl = window.location.href;
+        return currentUrl.replace(/^https/, "wss").replace("bips", "wss") + API_PATH;
+    }
+
+    function connectWebSocket() {
+        const wsUrl = computeWsUrl();
+        const socket = new WebSocket(wsUrl);
+
+        socket.onopen = (event) => {
+            console.log("Connecté à la WebSocket", event);
+        };
+
+        socket.onmessage = (event) => {
+            console.log("Message reçu:", event.data);
+            // Incrémenter bipsCount
+            setBipsCount((prevCount) => prevCount + 1);
+        };
+
+        socket.onerror = (error) => {
+            console.error("Erreur WebSocket:", error);
+        };
+
+        socket.onclose = (event) => {
+            if (event.wasClean) {
+                console.log(
+                    `Fermé proprement, code=${event.code}, raison=${event.reason}`
+                );
+            } else {
+                console.error("Connexion décédée");
+            }
+            console.log("WebSocket disconnected. Attempting to reconnect...");
+            setTimeout(connectWebSocket, 3000); // Tente de se reconnecter après 3 secondes
+        };
+        return socket;
+    }
+
     useEffect(() => {
         const savedPseudo = Cookies.get('pseudo');
         if (savedPseudo) {
@@ -81,40 +125,12 @@ function App() {
         else {
             alert("Geolocation is not supported by this browser.");
         }
-
-        const currentUrl = window.location.href;
-        const wsUrl = currentUrl.replace(/^https/, "wss").replace("bips", "wss")+API_PATH;
-
-        const socket = new WebSocket(wsUrl);
-
-        socket.onopen = (event) => {
-            console.log("Connecté à la WebSocket", event);
-        };
-
-        socket.onmessage = (event) => {
-            console.log("Message reçu:", event.data);
-        };
-
-        socket.onerror = (error) => {
-            console.error("Erreur WebSocket:", error);
-        };
-
-        socket.onclose = (event) => {
-            if (event.wasClean) {
-                console.log(
-                    `Fermé proprement, code=${event.code}, raison=${event.reason}`
-                );
-            } else {
-                console.error("Connexion décédée");
-            }
-        };
-
-        // Enregistrez la WebSocket dans l'état pour l'utiliser plus tard si nécessaire
-        setWs(socket);
+        let webSocket = connectWebSocket();
+        setWs(webSocket);
 
         // N'oubliez pas de fermer la WebSocket lors du démontage du composant
         return () => {
-            socket.close();
+            webSocket.close();
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -148,7 +164,8 @@ function App() {
         let postParams = { ...getParams};
         postParams.pseudo = pseudo;
         postParams.status_code = selectedStatusCode;
-        await axios.post(API_URL, postParams);
+        const wsParams = {action: "bip", data: postParams}
+        ws.send(JSON.stringify(wsParams));
         setBipsCount(bipsCount + 1);
     };
 

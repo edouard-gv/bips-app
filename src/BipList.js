@@ -6,8 +6,13 @@ import L from 'leaflet';
 
 L.Icon.Default.imagePath = '/';
 
-const API_URL = '/bips'; // l'API est sur le même domaine que le front
-//const API_URL = 'http://localhost:3001/bips'; // test en local
+const DEBUG = false;
+
+const API_PATH = 'bips';
+let API_URL = '/'+API_PATH; // l'API est sur le même domaine que le front
+if (DEBUG) {
+    API_URL = 'https://bips.agilenautes.com/'+API_PATH; // test sur le serveur directement
+}
 
 function BipList({location, bipsCount}) {
     const [bips, setBips] = useState([]);
