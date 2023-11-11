@@ -72,7 +72,8 @@ function App() {
         socket.onmessage = (event) => {
             console.log("Message reçu:", event.data);
             // Incrémenter bipsCount
-            setBipsCount((prevCount) => prevCount + 1);
+            if (JSON.parse(event.data)["action"] === "notify")
+                setBipsCount((prevCount) => prevCount + 1);
         };
 
         socket.onerror = (error) => {
@@ -170,7 +171,6 @@ function App() {
         postParams.status_code = selectedStatusCode;
         const wsParams = {action: "bip", data: postParams}
         ws.send(JSON.stringify(wsParams));
-        setBipsCount(bipsCount + 1);
     };
 
     return (
