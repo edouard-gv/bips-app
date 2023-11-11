@@ -6,15 +6,7 @@ import L from 'leaflet';
 
 L.Icon.Default.imagePath = '/';
 
-const DEBUG = false;
-
-const API_PATH = 'bips';
-let API_URL = '/'+API_PATH; // l'API est sur le même domaine que le front
-if (DEBUG) {
-    API_URL = 'https://bips.agilenautes.com/'+API_PATH; // test sur le serveur directement
-}
-
-function BipList({location, bipsCount}) {
+function BipList({location, bipsCount, api_url}) {
     const [bips, setBips] = useState([]);
     const [map, setMap] = useState(null);
 
@@ -28,13 +20,13 @@ function BipList({location, bipsCount}) {
                     map.target.panTo([location.latitude, location.longitude]);
                 }
             }
-            const response = await axios.get(API_URL, { params: getParams });
+            const response = await axios.get(api_url, { params: getParams });
             setBips(response.data);
         }
         if (location) {
             fetchData();
         }
-    }, [map, location, bipsCount]);
+    }, [map, location, bipsCount, api_url]);
 
     //récupération de l'heure dans un timestamp
     function padZero(number) {

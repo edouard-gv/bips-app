@@ -4,7 +4,11 @@ import axios from 'axios';
 import './App.css';
 import BipList from "./BipList";
 
-const DEBUG = false;
+let DEBUG = false;
+
+if (window.location.href.includes("localhost")) {
+    DEBUG = true;
+}
 
 const API_PATH = 'bips';
 let API_URL = '/'+API_PATH; // l'API est sur le même domaine que le front
