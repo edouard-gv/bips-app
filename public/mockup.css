@@ -1,0 +1,240 @@
+:root {
+    --col-dark1: #06686D;
+    --col-dark2: #0F6FC6;
+    --col-light1: #E5F4E0;
+    --col-light2: #FFFFFF;
+    --col-border1: #089CA3;
+    --col-border2: #17406D;
+    --col-accent1: #10CF9B;
+    --col-accent2: #7CCA62;
+    --col-text-light: #DBEFF9;
+}
+
+
+body {
+    max-width: 800px;
+    margin: 0;
+    padding: 0;
+}
+
+body, input, button {
+    font-family: 'Fira Mono', Menlo, Monaco, Consolas, 'Courier New', monospace;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.screen {
+    min-height: 100vh;
+    border: 2px solid var(--col-border1);
+    background-color: var(--col-light1);
+}
+
+.content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+.main {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    background-color: var(--col-dark1);
+    border-radius: 18px;
+    border: 9px solid var(--col-border1);
+    position: relative; /* Position relative pour servir de référence à la div de fond */
+    color: var(--col-text-light);
+
+}
+
+.main-background {
+    position: absolute; /* Sortir du flux de contenu de .main */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%; /* Remplit .main complètement */
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    padding-top: 30px;
+}
+
+
+.position, .actions {
+    text-align: center;
+    flex-basis: 100%;
+}
+
+.position {
+    color: var(--col-border1);
+}
+
+.position button {
+    background-color: var(--col-dark2);
+}
+
+.actions .center-action button {
+    background-color: var(--col-accent1);
+    color: var(--col-text-light);
+    font-size: large;
+    font-weight: bold;
+}
+
+.actions button.input {
+    color: var(--col-text-light);
+}
+
+.action-line {
+    display: grid;
+    grid-template-rows: 1fr;
+    align-items: flex-end;
+    justify-items: center;
+}
+
+.left-action {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    width: 100%;
+}
+
+.center-action {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.right-action {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    width: 100%;
+}
+
+.position .action-line {
+    grid-template-columns: 1fr 30px 1fr;
+}
+
+.position .left-action, .position .right-action {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.actions.action-line {
+    grid-template-columns: 1fr 55px 1fr;
+}
+
+.position .center-action {
+    width: 30px;
+    height: 30px;
+}
+
+.actions .center-action {
+    width: 55px;
+    height: 55px;
+}
+
+.actions .input {
+    background: var(--col-dark2);
+    border: 1px solid var(--col-border2);
+    width: 80px;
+}
+
+.map-placeholder {
+    height: 255px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    aspect-ratio: 1/1;
+}
+
+.pseudo .input {
+    background: var(--col-accent2);
+    border: 1px solid var(--col-border2);
+    width: 100%;
+    color: var(--col-text-light);
+    text-align: center  ;
+}
+
+
+.bipers {
+    display: flex;
+    min-width: 200px;
+    max-width: 400px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+}
+
+.biper {
+    width: 100px;
+    border: 1px solid var(--col-accent1);
+    background-color: var(--col-dark2);
+}
+
+button {
+    width: calc(100% - 10px);
+    height: calc(100% - 10px);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.input {
+    height: 30px;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cercle {
+    aspect-ratio: 1/1;
+    max-width: 300px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.c1 {
+    width: calc(100%);
+    background: var(--col-accent1);
+}
+
+.c2 {
+    width: calc(100% - 70px);
+    border: 34px solid var(--col-dark1);
+    position: relative;
+}
+
+.c3 {
+    width: calc(100% - 70px);
+    border: 34px solid var(--col-dark1);
+    position: absolute;
+}
+
+.c4 {
+    width: calc(100% - 21px);
+    border: 12px solid var(--col-accent2);
+}
+
+.map {
+    width: calc(100% - 70px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+}
+
+.actions, .pseudo, .bipers {
+    z-index: 1;
+}
